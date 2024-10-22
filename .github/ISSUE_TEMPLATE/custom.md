@@ -3,7 +3,7 @@ name: Custom issue template
 about: Custom issue template
 title: "[FEAT] "
 labels: ''
-assignees: ''
+assignees: seoyeoneel02
 
 ---
 
@@ -13,5 +13,5 @@ assignees: ''
 
 ### ✏️ ToDoList
 ---
-- [ ]  할 일1
-- [ ]  할 일2
+- [ ] 할 일1
+- [ ] 할 일2
