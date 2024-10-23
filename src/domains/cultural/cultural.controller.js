@@ -9,6 +9,7 @@ export const culturalController = async (req, res, next) => {
             data: courses,
 
         });
+
         
     }catch(error) {
         next(error);
