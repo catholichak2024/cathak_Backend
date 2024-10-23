@@ -1,13 +1,13 @@
-import dotenv from "dotenv";
+import dotenv from "dotenv/config";
 import express from "express";
 import cors from "cors";
 import swaggerAutogen from "swagger-autogen";
 import swaggerUiExpress from "swagger-ui-express";
 
 import { healthRoute } from './routes/health.js';
-
+import { culturalRoute } from "./routes/cultural.js";
  
-dotenv.config();
+//dotenv.config();
  
 const app = express()
 const port = process.env.PORT;
@@ -70,6 +70,8 @@ app.get('/', (req, res) => {
 
 // router setting
 app.use("/health", healthRoute);
+app.use("/cultural",culturalRoute);
+
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
