@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import swaggerAutogen from "swagger-autogen";
-import swaggerUiExpress from "swagger-ui-express";
-
+import SwaggerUi from "swagger-ui-express";
+import { specs } from "./swagger/swagger.config.js";
 import { healthRoute } from './routes/health.js';
+import { loginRoute } from "./routes/login.js";
 
 
 dotenv.config();
@@ -33,36 +33,8 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(
-    "/docs",
-    swaggerUiExpress.serve,
-    swaggerUiExpress.setup({}, {
-      swaggerOptions: {
-        url: "/openapi.json",
-      },
-    })
-  );
-  
-  app.get("/openapi.json", async (req, res, next) => {
-    // #swagger.ignore = true
-    const options = {
-      openapi: "3.0.0",
-      disableLogs: true,
-      writeOutputFile: false,
-    };
-    const outputFile = "/dev/null";
-    const routes = ["./src/index.js"];
-    const doc = {
-      info: {
-        title: "GGUM 6팀",
-        description: "GGUM 해커톤 6팀 스웨거입니다."
-      },
-      host: "localhost:3000"
-    };
-  
-    const result = await swaggerAutogen(options)(outputFile, routes, doc);
-    res.json(result ? result.data : null);
-  });
+//swagger
+app.use('/docs', SwaggerUi.serve, SwaggerUi.setup(specs));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
@@ -70,6 +42,7 @@ app.get('/', (req, res) => {
 
 // router setting
 app.use("/health", healthRoute);
+app.use("/EveryGrade/user", loginRoute);
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {

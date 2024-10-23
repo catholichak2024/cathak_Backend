@@ -1,0 +1,105 @@
+paths:
+  /EveryGrade/user/signup:
+    post:
+      tags:
+        - User
+      summary: 회원가입
+      operationId: postSignup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: 이름
+                id:
+                  type: string
+                  example: catholicId
+                pw:
+                  type: string
+                  example: catholicPw
+                number:
+                  type: string
+                  example: 202412345
+                major_type:
+                  type: string
+                  enum: [전공심화, 복수전공, 부전공]
+                  example: 전공심화
+                major1:
+                  type: string
+                  example: 컴퓨터정보공학부
+                major2:
+                  type: string
+                  example: 
+                minor:
+                  type: string
+                  example: 
+              required:
+                - name
+                - id
+                - pw
+                - number
+                - major_type
+                - major1
+      responses:
+        '200':
+          description: 회원가입 성공
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 200
+              isSuccess:
+                type: boolean
+                example: true
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "success!"
+              data:
+                type: array
+                example: {
+                  "userData": []
+                }
+                
+        '400':
+          description: 잘못된 요청
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 400
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON001
+              message:
+                type: string
+                example: 잘못된 요청입니다
+
+        '500':
+          description: 서버 에러
+          schema:
+            type: object
+            properties:
+              status:
+                type: integer
+                example: 500
+              isSuccess:
+                type: boolean
+                example: false
+              code:
+                type: integer
+                example: COMMON000
+              message:
+                type: string
+                example: 서버 에러, 관리자에게 문의 바랍니다.
