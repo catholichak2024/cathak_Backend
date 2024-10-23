@@ -16,7 +16,7 @@ export const addUser = async (data) => {
       return 1;
     }
 
-    const result = await pool.query(addUserSql, [data.name, data.id, data.pw, data.number, data.major_type, data.major1]);
+    const result = await pool.query(addUserSql, [data.name, data.id, data.pw, data.number, data.major_type, data.major1, data.major2, data.minor]);
     return result[0].insertId;
   } catch (err) {
     throw new BaseError(status.PARAMETER_IS_WRONG);
