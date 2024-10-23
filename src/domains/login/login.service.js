@@ -1,6 +1,7 @@
+import { BaseError } from "../../errors.js";
+import { status } from "../../response.status.js";
 import bcrypt from "bcrypt";
 import { signupDTO } from "./login.dto.js";
-import { DuplicateUserIdError, DuplicateUserNumberError } from "../../errors.js";
 import { addUser, getUser } from "./login.repository.js";
 
 export const signupService = async (body) => {
@@ -17,9 +18,10 @@ export const signupService = async (body) => {
     });
 
     if (joinUserId == 0) {
-        throw new DuplicateUserIdError("이미 존재하는 아이디입니다.", body);
+        console.log("joinUserId:", joinUserId);
+        throw new BaseError(status.USERID_ALREADY_EXIST);
     }else if(joinUserId == 1) {
-        throw new DuplicateUserNumberError("이미 존재하는 학번입니다.", body);
+        throw new BaseError(status.USERNUMBER_ALREADY_EXIST);
     }
 
     const user = await getUser(joinUserId);
