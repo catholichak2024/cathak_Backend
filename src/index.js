@@ -6,7 +6,7 @@ import swaggerUiExpress from "swagger-ui-express";
 
 import { healthRoute } from './routes/health.js';
 
-
+ 
 dotenv.config();
  
 const app = express()
