@@ -3,7 +3,7 @@ name: Custom issue template
 about: Custom issue template
 title: "[FEAT] "
 labels: ''
-assignees: seoyeoneel02
+assignees: ''
 
 ---
 
