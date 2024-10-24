@@ -25,7 +25,7 @@ export const signupService = async (body) => {
         throw new BaseError(status.USERNUMBER_ALREADY_EXIST);
     }
 
-    const user = await getUser(joinUserId);
+    const user = await getUser(body.id);
 
     return signupDTO(user);
 };
@@ -42,4 +42,8 @@ export async function loginService(body) {
         throw new BaseError(status.PW_IS_WRONG);
     }
     return loginDTO(user, tokenInfo);
+}
+
+export async function tokenService(decoded) {
+    return {"userId": decoded.userId};
 }

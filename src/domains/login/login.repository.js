@@ -29,7 +29,7 @@ export const addUser = async (data) => {
 export const getUser = async (userId) => {
   const conn = await pool.getConnection();
   try {
-    const [user] = await pool.query('SELECT * FROM user WHERE uuid = ?;', userId);
+    const [user] = await pool.query('SELECT * FROM user WHERE id = ?;', userId);
     console.log(user);
 
     if (user.length == 0) {
