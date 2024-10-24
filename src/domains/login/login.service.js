@@ -1,8 +1,8 @@
 import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
 import bcrypt from "bcrypt";
-import { signupDTO, loginDTO } from "./login.dto.js";
-import { addUser, getUser } from "./login.repository.js";
+import { signupDTO, loginDTO, findIdDTO } from "./login.dto.js";
+import { addUser, getUser, findUserId } from "./login.repository.js";
 
 export const signupService = async (body) => {
     const hashedPassword = await bcrypt.hash(body.pw, 10);
@@ -18,7 +18,6 @@ export const signupService = async (body) => {
     });
 
     if (joinUserId == 0) {
-        console.log("joinUserId:", joinUserId);
         throw new BaseError(status.USERID_ALREADY_EXIST);
     }else if(joinUserId == 1) {
         throw new BaseError(status.USERNUMBER_ALREADY_EXIST);
@@ -41,3 +40,12 @@ export const loginService = async (body) =>  {
     }
     return loginDTO(user);
 }
+
+export const findIdService = async (body) => {
+    const { name, number } = body;
+    const userId = await findUserId(name, number);
+    if (userId == null) {
+        throw new BaseError(status.USER_NOT_EXIST);
+    }
+    return findIdDTO(userId);
+};
