@@ -1,7 +1,7 @@
 import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
 import bcrypt from "bcrypt";
-import { signupDTO } from "./login.dto.js";
+import { signupDTO, loginDTO } from "./login.dto.js";
 import { addUser, getUser } from "./login.repository.js";
 
 export const signupService = async (body) => {
@@ -24,7 +24,20 @@ export const signupService = async (body) => {
         throw new BaseError(status.USERNUMBER_ALREADY_EXIST);
     }
 
-    const user = await getUser(joinUserId);
+    const user = await getUser(body.id);
 
     return signupDTO(user);
 };
+
+export const loginService = async (body) =>  {
+    const { id, pw } = body;
+    const user = await getUser(id);
+    if (!user) {
+        throw new BaseError(status.USERID_NOT_EXIST);
+    }
+    const isValidPw = await bcrypt.compare(pw, user[0].pw);
+    if (!isValidPw) {
+        throw new BaseError(status.PW_IS_WRONG);
+    }
+    return loginDTO(user);
+}
