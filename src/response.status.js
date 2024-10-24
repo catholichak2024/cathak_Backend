@@ -20,6 +20,7 @@ export const status = {
   SIGNUP_ERROR: { status: StatusCodes.FORBIDDEN,isSuccess: false, code: "SIGNUP003", message: "회원가입 에러" },
 
   //login err
-  USERID_NOT_EXIST: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "SIGNUP001", message: "존재하지 않는 아이디입니다." },
-  PW_IS_WRONG: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "SIGNUP001", message: "비밀번호가 일치하지 않습니다." },
+  USERID_NOT_EXIST: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "LOGIN001", message: "존재하지 않는 아이디입니다." },
+  PW_IS_WRONG: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "LOGIN002", message: "비밀번호가 일치하지 않습니다." },
+  EMPTY_TOKEN: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "LOGIN003", message: "토큰이 존재하지 않습니다." },
 };

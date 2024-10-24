@@ -3,6 +3,7 @@ import { status } from "../../response.status.js";
 import bcrypt from "bcrypt";
 import { signupDTO, loginDTO } from "./login.dto.js";
 import { addUser, getUser } from "./login.repository.js";
+import { generateJWTToken } from "../../middlewares/token.auth.js";
 
 export const signupService = async (body) => {
     const hashedPassword = await bcrypt.hash(body.pw, 10);
@@ -31,6 +32,7 @@ export const signupService = async (body) => {
 
 export async function loginService(body) {
     const { id, pw } = body;
+    const tokenInfo = generateJWTToken(id);
     const user = await getUser(id);
     if (!user) {
         throw new BaseError(status.USERID_NOT_EXIST);
@@ -39,5 +41,5 @@ export async function loginService(body) {
     if (!isValidPw) {
         throw new BaseError(status.PW_IS_WRONG);
     }
-    return loginDTO(user);
+    return loginDTO(user, tokenInfo);
 }
