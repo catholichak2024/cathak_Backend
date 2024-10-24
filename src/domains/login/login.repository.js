@@ -57,3 +57,18 @@ export const findUserId = async (name, number) => {
     conn.release();
   }
 };
+
+export const findUserPw = async (number, id) => {
+  const conn = await pool.getConnection();
+  try {
+    const user = await pool.query('SELECT * FROM user WHERE number = ? AND id = ?;', [number, id]);
+    if (user[0].length == 0) {
+        return null;
+    }
+    return user;
+  } catch (err) {
+    throw new BaseError(status.PARAMETER_IS_WRONG);
+  } finally {
+    conn.release();
+  }
+};
