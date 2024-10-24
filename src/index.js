@@ -4,11 +4,11 @@ import cors from "cors";
 import SwaggerUi from "swagger-ui-express";
 import { specs } from "./swagger/swagger.config.js";
 import { healthRoute } from './routes/health.js';
-import { loginRoute } from "./routes/login.js";
 
+import { loginRoute } from "./routes/login.js";
+import { majorfoundationRoute } from "./routes/majorfoundation.js";
 
 dotenv.config();
- 
 const app = express()
 const port = process.env.PORT;
 
@@ -44,6 +44,8 @@ app.get('/', (req, res) => {
 // router setting
 app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
+app.use("/majorfoundation", majorfoundationRoute);
+
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
