@@ -8,16 +8,23 @@ export const culturalService ={
         const [confirm]= await pool.query(
             `SELECT name, credit FROM subject WHERE type=?`,[type]
         );
-        if (!userid) {
             return {
                 confirm, // 과목 목록만 반환
                 bookmarkedCourses: [], // 북마크는 빈 배열로 반환
                 message: "No userId provided, returning courses only"
             };
-        }
+        
+        }catch(error) {
+            console.error("Error fetching cultural courses: ", error); // 에러 로그 출력
+            throw error; // 에러를 throw하여 컨트롤러에서 처리하도록 함
+            }
+        },
+        getCoursesWithBookmarks: async (userId) => {
+        try{
         const[bookmarkedCourses]=await pool.query(
-            'SELECT name FROM user_subject WHERE id=?',[userid]
+            'SELECT name FROM user_subject WHERE id=?',[userId]
         );
+        
         if (bookmarkedCourses.length === 0) {
             return {
                 confirm, // 과목 목록
@@ -31,11 +38,10 @@ export const culturalService ={
         confirm,
         bookmarkedCourses,
         message: "Data fetched successfully"
-        }
-    }catch(error) {
-        next(error);
+        };
+        }catch(error) {
         console.error("Error fetching cultural courses: ", error); // 에러 로그 출력
         throw error; // 에러를 throw하여 컨트롤러에서 처리하도록 함
-    }
+        }
     }
 };
