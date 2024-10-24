@@ -29,13 +29,13 @@ export const addUser = async (data) => {
 export const getUser = async (userId) => {
   const conn = await pool.getConnection();
   try {
-      const [user] = await pool.query('SELECT * FROM user WHERE uuid = ?;', userId);
-      console.log(user);
+    const [user] = await pool.query('SELECT * FROM user WHERE uuid = ?;', userId);
+    console.log(user);
 
-      if (user.length == 0) {
-          return null;
-      }
-      return user;
+    if (user.length == 0) {
+        return null;
+    }
+    return user;
   } catch (err) {
     throw new BaseError(status.PARAMETER_IS_WRONG);
   } finally {
