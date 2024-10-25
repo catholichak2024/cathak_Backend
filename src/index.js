@@ -6,8 +6,6 @@ import { specs } from "./swagger/swagger.config.js";
 import { healthRoute } from './routes/health.js';
 import { loginRoute } from "./routes/login.js";
 import { majorfoundationRoute } from "./routes/majorfoundation.js";
-
-import { loginRoute } from "./routes/login.js";
 import { culturalRoute } from "./routes/cultural.js";
 
 dotenv.config();
