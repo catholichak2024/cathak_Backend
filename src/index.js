@@ -6,6 +6,7 @@ import { specs } from "./swagger/swagger.config.js";
 import { healthRoute } from './routes/health.js';
 import { loginRoute } from "./routes/login.js";
 import { gradeRoute } from "./routes/grade.js";
+import { mypageRoute } from "./routes/mypage.js";
 
 
 dotenv.config();
@@ -46,6 +47,7 @@ app.get('/', (req, res) => {
 app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
 app.use("/EveryGrade/grade", gradeRoute);
+app.use("/EveryGrade/mypage", mypageRoute);
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
