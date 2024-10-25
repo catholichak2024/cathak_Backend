@@ -84,3 +84,15 @@ export const patchPwRepo = async (data) => {
     conn.release();
   }
 };
+
+export const checkIdRepo = async (userId) => {
+  const conn = await pool.getConnection();
+  try {
+      const existId = await pool.query(isExistId, userId);
+      return existId;
+  } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+  } finally {
+      conn.release();
+  }
+};

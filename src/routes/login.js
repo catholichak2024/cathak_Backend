@@ -2,7 +2,7 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import { tokenAuth } from "../middlewares/token.auth.js";
 import { signupController, loginController, tokenController, findIdController,
-    findPwController, patchPwController
+    findPwController, patchPwController, checkIdController
  } from "../domains/login/login.controller.js";
 
 export const loginRoute = express.Router();
@@ -13,3 +13,4 @@ loginRoute.get('/login/token', tokenAuth, asyncHandler(tokenController));
 loginRoute.post('/findId', asyncHandler(findIdController));
 loginRoute.post('/findPw', asyncHandler(findPwController));
 loginRoute.patch('/findPw', tokenAuth, asyncHandler(patchPwController));
+loginRoute.get('/signup/isExistId/:userId', asyncHandler(checkIdController));
