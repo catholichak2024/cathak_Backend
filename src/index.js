@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 // router setting
 app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
-app.use("/EveryGrade/majorfoundation");
+app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {

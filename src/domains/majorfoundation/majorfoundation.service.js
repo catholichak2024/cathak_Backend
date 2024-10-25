@@ -1,41 +1,30 @@
 import { pool } from "../../db.config.js";
-export const majorfoundationService ={
-    getmajorfoundationCourses: async () =>{//getmajorfoundationCoutses 교양 과목 목록을 가져오는 역할
-        //데이터베이스나 외부 API에서 데이터를 가져오는 로직?
-    try{
-        const majorfoundationCoutses=await pool.getConnection();
-        let type = "전공기초";
-        const [confirm]= await pool.query(
-        );
-        
-        }catch(error) {
-            console.error("Error fetching majorfoundation courses: ", error); // 에러 로그 출력
-            throw error; // 에러를 throw하여 컨트롤러에서 처리하도록 함
+
+export const majorfoundationService = {
+    getmajorfoundationCourses: async (userId) => {
+        try {
+            const [courses] = await pool.query(
+                `SELECT id, name, credit FROM subject WHERE type = '전공기초'`
+            );
+
+            let bookmarkedCourses = [];
+            if (userId) {
+                const [bookmarks] = await pool.query(
+                    'SELECT subject_id FROM user_subject WHERE user_id = ?', [userId]
+                );
+                bookmarkedCourses = bookmarks.map(bookmark => bookmark.subject_id);
             }
-        },
-        getCoursesWithBookmarks: async (userId) => {
-        try{
-        const[bookmarkedCourses]=await pool.query(
-            'SELECT name FROM user_subject WHERE id=?',[userId]
-        );
-        
-        if (bookmarkedCourses.length === 0) {
-            return {
-                confirm, // 과목 목록
-                bookmarkedCourses: [], // 북마크가 없으면 빈 배열
-                message: "No bookmarks found"
-            };
-        }
-        // 만약 userId가 null이거나 정의되지 않았을 경우, 북마크 처리 없이 반환
-        
-        return {
-        confirm,
-        bookmarkedCourses,
-        message: "Data fetched successfully"
-        };
-        }catch(error) {
-        console.error("Error fetching majorfoundation courses: ", error); // 에러 로그 출력
-        throw error; // 에러를 throw하여 컨트롤러에서 처리하도록 함
+
+            const result = courses.map(course => ({
+                name: course.name,
+                credit: course.credit,
+                bookmark: bookmarkedCourses.includes(course.id) // 북마크 여부
+            }));
+
+            return result;
+        } catch (error) {
+            console.error("Error fetching major foundation courses: ", error);
+            throw error;
         }
     }
 };
