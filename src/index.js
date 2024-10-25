@@ -7,6 +7,8 @@ import { healthRoute } from './routes/health.js';
 import { loginRoute } from "./routes/login.js";
 import { majorfoundationRoute } from "./routes/majorfoundation.js";
 import { culturalRoute } from "./routes/cultural.js";
+import { majorRoute } from "./routes/major.js";
+
 
 dotenv.config();
 const app = express()
@@ -46,6 +48,8 @@ app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
 app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
 app.use("/EveryGrade/cultural",culturalRoute);
+app.use("/EveryGrade/major",majorRoute);
+
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
