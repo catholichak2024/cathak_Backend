@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
 app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
 app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
-app.use("/cultural",culturalRoute);
+app.use("/EveryGrade/cultural",culturalRoute);
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
