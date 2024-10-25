@@ -3,7 +3,7 @@ import asyncHandler from "express-async-handler";
 import { tokenAuth } from "../middlewares/token.auth.js";
 import { signupController, loginController, tokenController, findIdController,
     findPwController, patchPwController, checkIdController, checkMajorController
- } from "../domains/login/login.controller.js";
+} from "../domains/login/login.controller.js";
 
 export const loginRoute = express.Router();
 
