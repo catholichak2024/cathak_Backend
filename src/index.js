@@ -8,7 +8,6 @@ import { loginRoute } from "./routes/login.js";
 import { majorfoundationRoute } from "./routes/majorfoundation.js";
 
 import { loginRoute } from "./routes/login.js";
-import { majorfoundationRoute } from "./routes/majorfoundation.js";
 import { culturalRoute } from "./routes/cultural.js";
 
 dotenv.config();
@@ -48,7 +47,6 @@ app.get('/', (req, res) => {
 app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
 app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
-app.use("/majorfoundation", majorfoundationRoute);
 app.use("/cultural",culturalRoute);
 
 app.use((err, req, res, next) => {
