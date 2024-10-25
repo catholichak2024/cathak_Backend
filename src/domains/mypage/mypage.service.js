@@ -1,7 +1,8 @@
 import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
+import bcrypt from "bcrypt";
 import { mypageDTO, majorDTO } from "./mypage.dto.js";
-import { mypageRepo, majorRepo } from "./mypage.repository.js";
+import { mypageRepo, majorRepo, pwRepo } from "./mypage.repository.js";
 
 export const mypageService = async (userId) => {
     const user = await mypageRepo(userId);
@@ -17,4 +18,13 @@ export const majorService = async (userId, body) => {
         throw new BaseError(status.PARAMETER_IS_WRONG);
     }
     return majorDTO(major);
+}
+
+export const pwService = async (userId, body) => {
+    const hashedPassword = await bcrypt.hash(body.pw, 10);
+    await pwRepo({
+        id: userId,
+        pw: hashedPassword
+    });
+    return;
 }
