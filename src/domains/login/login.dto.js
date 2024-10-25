@@ -17,3 +17,11 @@ export const checkIdDTO = (data) => {
     return {isExist: "사용 가능한 아이디입니다."};
   }
 };
+
+export const checkMajorDTO = (major) => {
+  if (major[0].length == 0) {
+    return {isExist: "검색 결과가 없습니다."};
+  } else {
+    return {majorData: major[0]};
+  }
+};

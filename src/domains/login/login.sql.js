@@ -6,3 +6,6 @@ export const isExistNumber =
 
 export const addUserSql = 
 "INSERT INTO user (name, id, pw, number, major_type, major1, major2, minor) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+
+export const checkMajorSql = 
+"SELECT name FROM major WHERE name REGEXP ? ORDER BY id;"

@@ -1,7 +1,7 @@
 import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
 import { pool } from "../../db.config.js";
-import { isExistId, isExistNumber, addUserSql } from "./login.sql.js";
+import { isExistId, isExistNumber, addUserSql, checkMajorSql } from "./login.sql.js";
 
 // User 데이터 삽입
 export const addUser = async (data) => {
@@ -90,6 +90,18 @@ export const checkIdRepo = async (userId) => {
   try {
       const existId = await pool.query(isExistId, userId);
       return existId;
+  } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+  } finally {
+      conn.release();
+  }
+};
+
+export const checkMajorRepo = async (name) => {
+  const conn = await pool.getConnection();
+  try {
+      const major = await pool.query(checkMajorSql, name);
+      return major;
   } catch (err) {
       throw new BaseError(status.PARAMETER_IS_WRONG);
   } finally {
