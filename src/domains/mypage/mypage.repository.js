@@ -36,3 +36,15 @@ export const majorRepo = async (userId, body) => {
         conn.release();
     }
 }
+
+export const pwRepo = async (data) => {
+    const conn = await pool.getConnection();
+    try {
+        await pool.query('UPDATE user SET pw = ? WHERE id = ?;', [data.pw, data.id]);
+        return;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+  };
