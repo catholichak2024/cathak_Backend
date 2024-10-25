@@ -16,3 +16,6 @@ export const mypageDTO = (data) => {
   return {userData: result};
 };
 
+export const majorDTO = (major) => {
+  return {majorData: major[0]};
+};
