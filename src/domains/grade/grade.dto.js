@@ -1,3 +1,3 @@
 export const gradeDTO = (grade) => {
-    return {gradeData: grade};
-  };
+  return {gradeData: grade};
+};
