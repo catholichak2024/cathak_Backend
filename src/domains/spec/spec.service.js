@@ -1,7 +1,7 @@
-import { specDTO } from "./spec.dto.js";
-import { specRepo } from "./spec.repository.js";
+import { bcDTO } from "./spec.dto.js";
+import { bcRepo } from "./spec.repository.js";
 
-export const specService = async (userId) => {
-    const result = await specRepo(userId);
-    return specDTO(result);
+export const bcService = async (userId) => {
+    const result = await bcRepo(userId);
+    return bcDTO(result);
 }
