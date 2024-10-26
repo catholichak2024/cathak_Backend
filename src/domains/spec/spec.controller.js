@@ -1,7 +1,7 @@
 import { response } from "../../response.js";
 import { status } from "../../response.status.js";
 import { bcService, mmService, omService, major1Service, major2Service, 
-  minorService, otherService, typeService } from "./spec.service.js";
+  minorService, otherService, typeService, kcService, fcService } from "./spec.service.js";
 
 export const bcController = async (req, res, next) => {
   console.log("기초교양 상세페이지를 조회합니다!");
@@ -49,4 +49,16 @@ export const typeController = async (req, res, next) => {
   console.log("전공 타입을 조회합니다!");
   const userId = req.decoded.userId;
   res.send(response(status.SUCCESS, await typeService(userId)));
+}
+
+export const kcController = async (req, res, next) => {
+  console.log("중핵교양 상세페이지를 조회합니다!");
+  const userId = req.decoded.userId;
+  res.send(response(status.SUCCESS, await kcService(userId)));
+}
+
+export const fcController = async (req, res, next) => {
+  console.log("자유교양 상세페이지를 조회합니다!");
+  const userId = req.decoded.userId;
+  res.send(response(status.SUCCESS, await fcService(userId)));
 }
