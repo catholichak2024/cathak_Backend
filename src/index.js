@@ -5,8 +5,11 @@ import SwaggerUi from "swagger-ui-express";
 import { specs } from "./swagger/swagger.config.js";
 import { healthRoute } from './routes/health.js';
 import { loginRoute } from "./routes/login.js";
+import { gradeRoute } from "./routes/grade.js";
+import { mypageRoute } from "./routes/mypage.js";
+import { specRoute } from "./routes/spec.js";
+import { culturalRoute } from "./routes/cultural.js";
 import { majorfoundationRoute } from "./routes/majorfoundation.js";
-
 
 dotenv.config();
  
@@ -45,6 +48,10 @@ app.get('/', (req, res) => {
 // router setting
 app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
+app.use("/EveryGrade/grade", gradeRoute);
+app.use("/EveryGrade/mypage", mypageRoute);
+app.use("/EveryGrade/spec", specRoute);
+app.use("/EveryGrade/cultural", culturalRoute);
 app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
 
 app.use((err, req, res, next) => {
