@@ -51,7 +51,7 @@ export const culturalService = {
                 FROM subject s
                 LEFT JOIN user_subject us 
                 ON s.name = us.subject_name AND us.user_id = 'catholic1'
-                WHERE s.type = '전공기초';`, 
+                WHERE s.type = '교양';`, 
                 [userId]
             );
 
