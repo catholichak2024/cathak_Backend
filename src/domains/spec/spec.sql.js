@@ -35,3 +35,25 @@ export const mmSql2 =
 + "JOIN user_subject us ON s.name = us.subject_name "
 + "JOIN major ON major.name = s.major "
 + "WHERE type = '전공기초' AND (department = ? OR department = ?) AND user_id = ?;"
+
+export const omCredit1 = 
+"SELECT SUM(credit) AS sum FROM subject s JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공기초' AND NOT department = ? AND user_id = ?;"
+
+export const omCredit2 = 
+"SELECT SUM(credit) AS sum FROM subject s JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공기초' AND NOT (department = ? OR department = ?) AND user_id = ?;"
+
+export const omSql1 = 
+"SELECT credit, s.name, CASE WHEN us.user_id IS NOT NULL THEN 1 ELSE 0 END AS bookmark FROM subject s "
++ "JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공기초' AND NOT department = ? AND user_id = ?;"
+
+export const omSql2 = 
+"SELECT credit, s.name, CASE WHEN us.user_id IS NOT NULL THEN 1 ELSE 0 END AS bookmark FROM subject s "
++ "JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공기초' AND NOT (department = ? OR department = ?) AND user_id = ?;"
