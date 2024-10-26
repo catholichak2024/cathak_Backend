@@ -35,3 +35,11 @@ export const mmSql2 =
 + "JOIN user_subject us ON s.name = us.subject_name "
 + "JOIN major ON major.name = s.major "
 + "WHERE type = '전공기초' AND (department = ? OR department = ?) AND user_id = ?;"
+
+export const fcSql = 
+"SELECT credit, name, CASE WHEN us.user_id IS NOT NULL THEN 1 ELSE 0 END AS bookmark FROM subject "
++ "JOIN user_subject us ON subject.name = us.subject_name "
++ "WHERE type_spec = '자유교양' AND user_id = ?;"
+export const fcCredit = 
+"SELECT SUM(credit) AS sum FROM subject JOIN user_subject us ON subject.name = us.subject_name "
++ "WHERE type_spec = '자유교양' AND user_id = ?;"
