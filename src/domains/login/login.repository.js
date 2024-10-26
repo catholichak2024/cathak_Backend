@@ -29,7 +29,7 @@ export const addUser = async (data) => {
 export const getUser = async (userId) => {
   const conn = await pool.getConnection();
   try {
-    const [user] = await pool.query('SELECT * FROM user WHERE id = ?;', userId);
+    const [user] = await pool.query("SELECT * FROM user WHERE id = ?;", userId);
     console.log(user);
 
     if (user.length == 0) {
@@ -46,7 +46,7 @@ export const getUser = async (userId) => {
 export const findUserId = async (name, number) => {
   const conn = await pool.getConnection();
   try {
-    const userId = await pool.query('SELECT id FROM user WHERE name = ? AND number = ?;', [name, number]);
+    const userId = await pool.query("SELECT id FROM user WHERE name = ? AND number = ?;", [name, number]);
     if (userId[0].length == 0) {
         return null;
     }
@@ -61,7 +61,7 @@ export const findUserId = async (name, number) => {
 export const findUserPw = async (number, id) => {
   const conn = await pool.getConnection();
   try {
-    const user = await pool.query('SELECT * FROM user WHERE number = ? AND id = ?;', [number, id]);
+    const user = await pool.query("SELECT * FROM user WHERE number = ? AND id = ?;", [number, id]);
     if (user[0].length == 0) {
         return null;
     }
@@ -76,7 +76,7 @@ export const findUserPw = async (number, id) => {
 export const patchPwRepo = async (data) => {
   const conn = await pool.getConnection();
   try {
-    await pool.query('UPDATE user SET pw = ? WHERE id = ?;', [data.pw, data.id]);
+    await pool.query("UPDATE user SET pw = ? WHERE id = ?;", [data.pw, data.id]);
     return;
   } catch (err) {
     throw new BaseError(status.PARAMETER_IS_WRONG);
@@ -101,6 +101,18 @@ export const checkMajorRepo = async (name) => {
   const conn = await pool.getConnection();
   try {
       const major = await pool.query(checkMajorSql, name);
+      return major;
+  } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+  } finally {
+      conn.release();
+  }
+};
+
+export const majorRepo = async () => {
+  const conn = await pool.getConnection();
+  try {
+      const major = await pool.query("SELECT name FROM major ORDER BY id;");
       return major;
   } catch (err) {
       throw new BaseError(status.PARAMETER_IS_WRONG);
