@@ -1,3 +1,6 @@
 export const bcDTO = (data) => {
-    return {minimum: data[0][0].credit, received: data[1][0].sum, subject: data[2]};
+    const minimum = data[0][0].credit
+    const received = data[1][0].sum
+    const text = data[2][0].content
+    return {minimum: minimum, received: received, content: text, subject: data[3]};
 }
