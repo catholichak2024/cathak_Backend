@@ -5,28 +5,29 @@ export const getHomeData = async (userId) => {
         // 교양 학점 합산
         const [culturalCredits] = await pool.query(
             `SELECT SUM(subject.credit) AS culturalTotal
-            FROM (
-                SELECT DISTINCT subject_name
-                FROM user_subject
-                WHERE user_id = 'catholic1' AND str_score IS NOT NULL
-            ) us
-            JOIN subject ON us.subject_name = subject.name
-            WHERE subject.type = '교양';
-`
+             FROM (
+                 SELECT DISTINCT subject_name
+                 FROM user_subject
+                 WHERE user_id = 'catholic1'
+             ) us
+             JOIN subject ON us.subject_name = subject.name
+             WHERE subject.type = '교양';
+            `
         );
+        
         
         
 
         // 전공기초 학점 합산
         const [majorFoundationCredits] = await pool.query(
-            `SELECT SUM(subject.credit) AS ajorFoundationTotal
-        FROM (
-                SELECT DISTINCT subject_name
-                FROM user_subject
-                WHERE user_id = 'catholic1' AND str_score IS NOT NULL
-        ) us
-        JOIN subject ON us.subject_name = subject.name
-        WHERE subject.type = '전공기초';
+            `SELECT SUM(subject.credit) AS majorFoundationTotal
+             FROM (
+                 SELECT DISTINCT subject_name
+                 FROM user_subject
+                 WHERE user_id = 'catholic1'
+             ) us
+             JOIN subject ON us.subject_name = subject.name
+             WHERE subject.type = '전공기초';
 `
         );
         
@@ -34,13 +35,13 @@ export const getHomeData = async (userId) => {
         // 전공 학점 합산
         const [majorCredits] = await pool.query(
             `SELECT SUM(subject.credit) AS majorTotal
-        FROM (
-                SELECT DISTINCT subject_name
-                FROM user_subject
-                WHERE user_id = 'catholic1' AND str_score IS NOT NULL
-        ) us
-        JOIN subject ON us.subject_name = subject.name
-        WHERE subject.type = '전공';
+             FROM (
+                 SELECT DISTINCT subject_name
+                 FROM user_subject
+                 WHERE user_id = 'catholic1'
+             ) us
+             JOIN subject ON us.subject_name = subject.name
+             WHERE subject.type = '전공';
 `
         );
 
