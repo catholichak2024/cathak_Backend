@@ -1,7 +1,7 @@
 import { pool } from "../../db.config.js";
 
-export const culturalService = {
-    getCulturalCourses: async (userId) => {
+export const majorfoundationService = {
+    getmajorfoundationCourses: async (userId) => {
         try {
             const [courses] = await pool.query(
                 `SELECT 
@@ -26,7 +26,7 @@ export const culturalService = {
 
             return result;
         } catch (error) {
-            console.error("Error fetching cultural courses: ", error);
+            console.error("Error fetching majorfoundation courses: ", error);
             throw error;
         }
     }
