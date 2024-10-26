@@ -1,0 +1,75 @@
+import { BaseError } from "../../errors.js";
+import { status } from "../../response.status.js";
+import { pool } from "../../db.config.js";
+import { bcSql, bcCredit, mmMinimum, mmDep, mmCredit1, mmCredit2, mmSql1, mmSql2, 
+    omCredit1, omCredit2, omSql1, omSql2
+} from "./spec.sql.js";
+
+export const bcRepo = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+        const minimum = await pool.query("SELECT credit FROM requirement WHERE subject_type = '기초교양'");
+        const received = await pool.query(bcCredit, userId);
+        const require = await pool.query("SELECT content FROM requirement WHERE subject_type = '기초교양';");
+        const subject = await pool.query(bcSql, userId);
+        const result = [minimum[0], received[0], require[0], subject[0]];
+        console.log("result",result)
+        return result;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+}
+
+export const mmRepo = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+        const major = await pool.query("SELECT major1, major2 FROM user WHERE id = ?;", userId);
+        const minimum = await pool.query(mmMinimum, [major[0][0].major1, major[0][0].major2]);
+        const dep = await pool.query(mmDep, [major[0][0].major1, major[0][0].major2]);
+        if(dep[0].length == 1) {
+            const received = await pool.query(mmCredit1, [dep[0][0].department, userId]);
+            const require = await pool.query("SELECT major, content FROM requirement WHERE subject_type = '본영역 전기' AND major = ?;", [major[0][0].major1, major[0][0].major2]);
+            const subject = await pool.query(mmSql1, [dep[0][0].department, userId]);
+            const result = [minimum[0], received[0], require[0], subject[0]];
+            return result;
+        } else {
+            const received = await pool.query(mmCredit2, [dep[0][0].department, dep[0][1].department, userId]);
+            const require = await pool.query("SELECT major, content FROM requirement WHERE subject_type = '본영역 전기' AND (major = ? OR major = ?);", [major[0][0].major1, major[0][0].major2]);
+            const subject = await pool.query(mmSql2, [dep[0][0].department, dep[0][1].department, userId]);
+            const result = [minimum[0], received[0], require[0], subject[0]];
+            return result;
+        }
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+}
+
+export const omRepo = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+        const major = await pool.query("SELECT major1, major2 FROM user WHERE id = ?;", userId);
+        const minimum = await pool.query(mmMinimum, [major[0][0].major1, major[0][0].major2]);
+        const dep = await pool.query(mmDep, [major[0][0].major1, major[0][0].major2]);
+        if(dep[0].length == 1) {
+            const received = await pool.query(omCredit1, [dep[0][0].department, userId]);
+            const require = await pool.query("SELECT major, content FROM requirement WHERE subject_type = '타계열 전기' AND major = ?;", [major[0][0].major1, major[0][0].major2]);
+            const subject = await pool.query(omSql1, [dep[0][0].department, userId]);
+            const result = [minimum[0], received[0], require[0], subject[0]];
+            return result;
+        } else {
+            const received = await pool.query(omCredit2, [dep[0][0].department, dep[0][1].department, userId]);
+            const require = await pool.query("SELECT major, content FROM requirement WHERE subject_type = '타계열 전기' AND (major = ? OR major = ?);", [major[0][0].major1, major[0][0].major2]);
+            const subject = await pool.query(omSql2, [dep[0][0].department, dep[0][1].department, userId]);
+            const result = [minimum[0], received[0], require[0], subject[0]];
+            return result;
+        }
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+}

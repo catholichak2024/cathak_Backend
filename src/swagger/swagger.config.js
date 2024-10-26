@@ -17,6 +17,10 @@ const options = {
         },
         servers: [
             {
+                url: 'http://13.125.38.246:3000/',
+                description: 'CI/CD server'
+            },
+            {
                 url: 'http://localhost:3000/',
                 description: 'Local server'
             }
