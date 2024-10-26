@@ -2,7 +2,7 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import { tokenAuth } from "../middlewares/token.auth.js";
 import { bcController, mmController, omController, major1Controller, major2Controller, 
-    minorController, otherController, typeController, kcController } from "../domains/spec/spec.controller.js";
+    minorController, otherController, typeController, kcController, fcController } from "../domains/spec/spec.controller.js";
 
 export const specRoute = express.Router();
 
@@ -15,3 +15,4 @@ specRoute.get('/minor', tokenAuth, asyncHandler(minorController));
 specRoute.get('/other', tokenAuth, asyncHandler(otherController));
 specRoute.get('/major-type', tokenAuth, asyncHandler(typeController));
 specRoute.get('/core-cultural', tokenAuth, asyncHandler(kcController));
+specRoute.get('/free-cultural', tokenAuth, asyncHandler(fcController));
