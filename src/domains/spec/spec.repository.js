@@ -131,7 +131,6 @@ export const otherRepo = async (userId) => {
     try {
         const major = await pool.query("SELECT major1, major2, minor FROM user WHERE id = ?;", userId);
         const { major1, major2, minor } = major[0][0];
-        console.log(major1, major2, minor);
         const minimum = await pool.query("SELECT credit FROM requirement WHERE subject_type = '타전공';");
         const require = await pool.query("SELECT content FROM requirement WHERE subject_type = '타전공';");
         if(major2 == null && minor == null) {
