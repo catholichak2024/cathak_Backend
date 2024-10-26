@@ -57,3 +57,18 @@ export const omSql2 =
 + "JOIN user_subject us ON s.name = us.subject_name "
 + "JOIN major ON major.name = s.major "
 + "WHERE type = '전공기초' AND NOT (department = ? OR department = ?) AND user_id = ?;"
+
+export const major1Minimum = 
+"SELECT credit FROM minimum "
++"WHERE major_type = ? AND name = ?;"
+
+export const major1Credit = 
+"SELECT SUM(credit) AS sum FROM subject s JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공' AND major = ? AND user_id = ?;"
+
+export const major1Sql = 
+"SELECT credit, s.name, CASE WHEN us.user_id IS NOT NULL THEN 1 ELSE 0 END AS bookmark FROM subject s "
++ "JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공' AND major = ? AND user_id = ?;"
