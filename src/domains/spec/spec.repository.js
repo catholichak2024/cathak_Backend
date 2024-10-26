@@ -7,7 +7,7 @@ export const bcRepo = async (userId) => {
     const conn = await pool.getConnection();
     try {
         const minimum = await pool.query("SELECT credit FROM requirement WHERE subject_type = '기초교양'");
-        const received = await pool.query(bcCredit);
+        const received = await pool.query(bcCredit, userId);
         const subject = await pool.query(bcSql, userId);
         const result = [minimum[0], received[0], subject[0]];
         console.log("result",result)
