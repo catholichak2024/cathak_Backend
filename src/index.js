@@ -8,11 +8,23 @@ import { loginRoute } from "./routes/login.js";
 import { gradeRoute } from "./routes/grade.js";
 import { mypageRoute } from "./routes/mypage.js";
 import { specRoute } from "./routes/spec.js";
+import { culturalRoute } from "./routes/cultural.js";
+import { majorfoundationRoute } from "./routes/majorfoundation.js";
+import { majorRoute } from "./routes/major.js";
 
 dotenv.config();
  
 const app = express()
 const port = process.env.PORT;
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Expose-Headers', 'Authorization'); // 이 줄을 추가합니다.
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
 
 app.use((req, res, next) => {
     res.success = (success) => {
@@ -49,6 +61,9 @@ app.use("/EveryGrade/user", loginRoute);
 app.use("/EveryGrade/grade", gradeRoute);
 app.use("/EveryGrade/mypage", mypageRoute);
 app.use("/EveryGrade/spec", specRoute);
+app.use("/EveryGrade/cultural", culturalRoute);
+app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
+app.use("/EveryGrade/major", majorRoute);
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {

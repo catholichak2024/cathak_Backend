@@ -47,4 +47,28 @@ export const pwRepo = async (data) => {
     } finally {
         conn.release();
     }
+}
+  
+export const searchRepo = async () => {
+    const conn = await pool.getConnection();
+    try {
+        const major = await pool.query("SELECT name FROM major ORDER BY id;");
+        return major;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+};
+
+export const nameRepo = async (name) => {
+    const conn = await pool.getConnection();
+    try {
+        const major = await pool.query("SELECT name FROM major WHERE name REGEXP ? ORDER BY id;", name);
+        return major;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
   };
