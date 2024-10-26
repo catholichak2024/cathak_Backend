@@ -21,6 +21,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.header('Access-Control-Expose-Headers', 'Authorization'); // 이 줄을 추가합니다.
   res.header('Access-Control-Allow-Credentials', 'true');
   next();
 });
