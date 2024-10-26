@@ -4,26 +4,44 @@ export const getHomeData = async (userId) => {
     try {
         // 교양 학점 합산
         const [culturalCredits] = await pool.query(
-            `SELECT SUM(credit) AS culturalTotal
+            `SELECT SUM(subject.credit) AS culturalTotal
+            FROM (
+                SELECT DISTINCT subject_name
                 FROM user_subject
-                JOIN subject ON user_subject.subject_name = subject.name
-                WHERE user_subject.user_id = ? AND subject.type = '교양'`, [userId]
+                WHERE user_id = 'catholic1' AND str_score IS NOT NULL
+            ) us
+            JOIN subject ON us.subject_name = subject.name
+            WHERE subject.type = '교양';
+`
         );
+        
+        
 
         // 전공기초 학점 합산
         const [majorFoundationCredits] = await pool.query(
-            `SELECT SUM(credit) AS majorFoundationTotal
+            `SELECT SUM(subject.credit) AS ajorFoundationTotal
+        FROM (
+                SELECT DISTINCT subject_name
                 FROM user_subject
-                JOIN subject ON user_subject.subject_name = subject.name
-                WHERE user_subject.user_id = ? AND subject.type = '전공기초'`, [userId]
+                WHERE user_id = 'catholic1' AND str_score IS NOT NULL
+        ) us
+        JOIN subject ON us.subject_name = subject.name
+        WHERE subject.type = '전공기초';
+`
         );
+        
 
         // 전공 학점 합산
         const [majorCredits] = await pool.query(
-            `SELECT SUM(credit) AS majorTotal
+            `SELECT SUM(subject.credit) AS majorTotal
+        FROM (
+                SELECT DISTINCT subject_name
                 FROM user_subject
-                JOIN subject ON user_subject.subject_name = subject.name
-                WHERE user_subject.user_id = ? AND subject.type = '전공'`, [userId]
+                WHERE user_id = 'catholic1' AND str_score IS NOT NULL
+        ) us
+        JOIN subject ON us.subject_name = subject.name
+        WHERE subject.type = '전공';
+`
         );
 
         // 전체 성적 계산 (GPA)
@@ -31,48 +49,53 @@ export const getHomeData = async (userId) => {
             `SELECT 
                 SUM(
                     CASE 
-                        WHEN user_subject.str_score = 'A+' THEN 4.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'A0' THEN 4.0 * user_subject.credit
-                        WHEN user_subject.str_score = 'B+' THEN 3.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'B0' THEN 3.0 * user_subject.credit
-                        WHEN user_subject.str_score = 'C+' THEN 2.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'C0' THEN 2.0 * user_subject.credit
-                        WHEN user_subject.str_score = 'D+' THEN 1.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'D0' THEN 1.0 * user_subject.credit
+                        WHEN user_subject.str_score = 'A+' THEN 4.5
+                        WHEN user_subject.str_score = 'A0' THEN 4.0
+                        WHEN user_subject.str_score = 'B+' THEN 3.5
+                        WHEN user_subject.str_score = 'B0' THEN 3.0
+                        WHEN user_subject.str_score = 'C+' THEN 2.5
+                        WHEN user_subject.str_score = 'C0' THEN 2.0
+                        WHEN user_subject.str_score = 'D+' THEN 1.5
+                        WHEN user_subject.str_score = 'D0' THEN 1.0
                         ELSE 0
                     END
-                ) / SUM(user_subject.credit) AS GPA
-                FROM user_subject
-                JOIN subject ON user_subject.subject_name = subject.name
-                WHERE user_subject.user_id = ?`, [userId]        );
-        const totalGPA = totalGPAResult[0]?.GPA != null ? totalGPAResult[0].GPA.toFixed(1) : "0.0";
-
+                ) / COUNT(user_subject.str_score) AS GPA
+            FROM user_subject
+            JOIN subject ON user_subject.subject_name = subject.name
+            WHERE user_subject.user_id = ? AND user_subject.str_score IS NOT NULL`, [userId]
+        );
+        
+        const totalGPA = totalGPAResult[0]?.GPA != null ? parseFloat(totalGPAResult[0].GPA).toFixed(1) : "0.0";
+        
         // 전공 성적 계산 (Major GPA)
         const [majorGPAResult] = await pool.query(
             `SELECT 
                 SUM(
                     CASE 
-                        WHEN user_subject.str_score = 'A+' THEN 4.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'A0' THEN 4.0 * user_subject.credit
-                        WHEN user_subject.str_score = 'B+' THEN 3.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'B0' THEN 3.0 * user_subject.credit
-                        WHEN user_subject.str_score = 'C+' THEN 2.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'C0' THEN 2.0 * user_subject.credit
-                        WHEN user_subject.str_score = 'D+' THEN 1.5 * user_subject.credit
-                        WHEN user_subject.str_score = 'D0' THEN 1.0 * user_subject.credit
+                        WHEN user_subject.str_score = 'A+' THEN 4.5
+                        WHEN user_subject.str_score = 'A0' THEN 4.0
+                        WHEN user_subject.str_score = 'B+' THEN 3.5
+                        WHEN user_subject.str_score = 'B0' THEN 3.0
+                        WHEN user_subject.str_score = 'C+' THEN 2.5
+                        WHEN user_subject.str_score = 'C0' THEN 2.0
+                        WHEN user_subject.str_score = 'D+' THEN 1.5
+                        WHEN user_subject.str_score = 'D0' THEN 1.0
                         ELSE 0
                     END
-                ) / SUM(user_subject.credit) AS majorGPA
-                FROM user_subject
-                JOIN subject ON user_subject.subject_name = subject.name
-                WHERE user_subject.user_id = ? AND subject.type = '전공'`, [userId]
+                ) / COUNT(user_subject.str_score) AS GPA
+            FROM user_subject
+            JOIN subject ON user_subject.subject_name = subject.name
+            WHERE user_subject.user_id = ? AND subject.type = '전공' AND user_subject.str_score IS NOT NULL`, [userId]
         );
-        const majorGPA = majorGPAResult[0]?.majorGPA != null ? majorGPAResult[0].majorGPA.toFixed(1) : "0.0";
+        
+        const majorGPA = majorGPAResult[0]?.GPA != null ? parseFloat(majorGPAResult[0].GPA).toFixed(1) : "0.0";
+        
+        const totalCredits = 
+        (parseInt(culturalCredits[0].culturalTotal) || 0) +
+        (parseInt(majorFoundationCredits[0].majorFoundationTotal) || 0) +
+        (parseInt(majorCredits[0].majorTotal) || 0);
+    
 
-        // 총 학점 계산
-        const totalCredits = (culturalCredits[0].culturalTotal || 0) +
-            (majorFoundationCredits[0].majorFoundationTotal || 0) +
-            (majorCredits[0].majorTotal || 0);
 
         return {
             culturalCredits: culturalCredits[0].culturalTotal || 0,
