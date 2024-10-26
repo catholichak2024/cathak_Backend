@@ -3,7 +3,7 @@ import { status } from "../../response.status.js";
 import { pool } from "../../db.config.js";
 import { bcSql, bcCredit, mmMinimum, mmDep, mmCredit1, mmCredit2, mmSql1, mmSql2, 
     omCredit1, omCredit2, omSql1, omSql2, major1Minimum, majorCredit, majorSql, 
-    major2Minimum
+    major2Minimum, minorMinimum
 } from "./spec.sql.js";
 
 export const bcRepo = async (userId) => {
@@ -100,6 +100,23 @@ export const major2Repo = async (userId) => {
         const received = await pool.query(majorCredit, [major[0][0].major2, userId]);
         const require = await pool.query("SELECT content FROM requirement WHERE subject_type = '제2전공' AND major = ?;", major[0][0].major2);
         const subject = await pool.query(majorSql, [major[0][0].major2, userId]);
+        const result = [minimum[0], received[0], require[0], subject[0]];
+        return result;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+}
+
+export const minorRepo = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+        const major = await pool.query("SELECT minor FROM user WHERE id = ?;", userId);
+        const minimum = await pool.query(minorMinimum, major[0][0].minor);
+        const received = await pool.query(majorCredit, [major[0][0].minor, userId]);
+        const require = await pool.query("SELECT content FROM requirement WHERE subject_type = '부전공';");
+        const subject = await pool.query(majorSql, [major[0][0].minor, userId]);
         const result = [minimum[0], received[0], require[0], subject[0]];
         return result;
     } catch (err) {
