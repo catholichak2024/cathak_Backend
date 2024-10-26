@@ -1,8 +1,8 @@
 import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
 import bcrypt from "bcrypt";
-import { mypageDTO, majorDTO, searchDTO } from "./mypage.dto.js";
-import { mypageRepo, majorRepo, pwRepo, searchRepo } from "./mypage.repository.js";
+import { mypageDTO, majorDTO, searchDTO, nameDTO } from "./mypage.dto.js";
+import { mypageRepo, majorRepo, pwRepo, searchRepo, nameRepo } from "./mypage.repository.js";
 
 export const mypageService = async (userId) => {
     const user = await mypageRepo(userId);
@@ -32,4 +32,9 @@ export const pwService = async (userId, body) => {
 export const searchService = async () => {
     const major = await searchRepo();
     return searchDTO(major);
+}
+
+export const nameService = async (name) => {
+    const major = await nameRepo(name);
+    return nameDTO(major);
 }
