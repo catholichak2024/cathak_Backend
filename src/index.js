@@ -9,6 +9,7 @@ import { gradeRoute } from "./routes/grade.js";
 import { mypageRoute } from "./routes/mypage.js";
 import { specRoute } from "./routes/spec.js";
 import { culturalRoute } from "./routes/cultural.js";
+import { majorfoundationRoute } from "./routes/majorfoundation.js";
 
 dotenv.config();
  
@@ -51,6 +52,7 @@ app.use("/EveryGrade/grade", gradeRoute);
 app.use("/EveryGrade/mypage", mypageRoute);
 app.use("/EveryGrade/spec", specRoute);
 app.use("/EveryGrade/cultural", culturalRoute);
+app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
