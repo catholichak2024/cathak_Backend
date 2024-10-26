@@ -3,7 +3,7 @@ import { status } from "../../response.status.js";
 import { pool } from "../../db.config.js";
 import { bcSql, bcCredit, mmMinimum, mmDep, mmCredit1, mmCredit2, mmSql1, mmSql2, 
     omCredit1, omCredit2, omSql1, omSql2, major1Minimum, majorCredit, majorSql, 
-    major2Minimum, minorMinimum
+    major2Minimum, otherCredit, otherSql
 } from "./spec.sql.js";
 
 export const bcRepo = async (userId) => {
@@ -113,12 +113,43 @@ export const minorRepo = async (userId) => {
     const conn = await pool.getConnection();
     try {
         const major = await pool.query("SELECT minor FROM user WHERE id = ?;", userId);
-        const minimum = await pool.query(minorMinimum, major[0][0].minor);
+        const minimum = await pool.query("SELECT credit FROM requirement WHERE subject_type = '부전공';");
         const received = await pool.query(majorCredit, [major[0][0].minor, userId]);
         const require = await pool.query("SELECT content FROM requirement WHERE subject_type = '부전공';");
         const subject = await pool.query(majorSql, [major[0][0].minor, userId]);
         const result = [minimum[0], received[0], require[0], subject[0]];
         return result;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+}
+
+export const otherRepo = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+        const major = await pool.query("SELECT major1, major2, minor FROM user WHERE id = ?;", userId);
+        const { major1, major2, minor } = major[0][0];
+        console.log(major1, major2, minor);
+        const minimum = await pool.query("SELECT credit FROM requirement WHERE subject_type = '타전공';");
+        const require = await pool.query("SELECT content FROM requirement WHERE subject_type = '타전공';");
+        if(major2 == null && minor == null) {
+            const received = await pool.query(majorCredit, [major1, userId]);
+            const subject = await pool.query(majorSql, [major1, userId]);
+            const result = [minimum[0], received[0], require[0], subject[0]];
+            return result;
+        } else if(major2 != null) {
+            const received = await pool.query(otherCredit, [major1, major2, userId]);
+            const subject = await pool.query(otherSql, [major1, major2, userId]);
+            const result = [minimum[0], received[0], require[0], subject[0]];
+            return result;
+        } else if(minor != null) {
+            const received = await pool.query(otherCredit, [major1, minor, userId]);
+            const subject = await pool.query(otherSql, [major1, minor, userId]);
+            const result = [minimum[0], received[0], require[0], subject[0]];
+            return result;
+        }
     } catch (err) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
     } finally {

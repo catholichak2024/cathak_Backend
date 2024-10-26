@@ -75,5 +75,13 @@ export const majorSql =
 export const major2Minimum = 
 "SELECT credit FROM minimum WHERE major_type = '복수전공' AND name = ?;"
 
-export const minorMinimum = 
-"SELECT credit FROM requirement WHERE subject_type = '부전공';"
+export const otherCredit = 
+"SELECT SUM(credit) AS sum FROM subject s JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공' AND NOT (major = ? OR major = ?) AND user_id = ?;"
+
+export const otherSql = 
+"SELECT credit, s.name, CASE WHEN us.user_id IS NOT NULL THEN 1 ELSE 0 END AS bookmark FROM subject s "
++ "JOIN user_subject us ON s.name = us.subject_name "
++ "JOIN major ON major.name = s.major "
++ "WHERE type = '전공' AND NOT (major = ? OR major = ?) AND user_id = ?;"

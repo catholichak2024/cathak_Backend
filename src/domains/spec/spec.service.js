@@ -1,5 +1,5 @@
 import { bcDTO, mfDTO, majorDTO } from "./spec.dto.js";
-import { bcRepo, mmRepo, omRepo, major1Repo, major2Repo, minorRepo } from "./spec.repository.js";
+import { bcRepo, mmRepo, omRepo, major1Repo, major2Repo, minorRepo, otherRepo } from "./spec.repository.js";
 
 export const bcService = async (userId) => {
     const result = await bcRepo(userId);
@@ -28,5 +28,10 @@ export const major2Service = async (userId) => {
 
 export const minorService = async (userId) => {
     const result = await minorRepo(userId);
+    return majorDTO(result);
+}
+
+export const otherService = async (userId) => {
+    const result = await otherRepo(userId);
     return majorDTO(result);
 }
