@@ -11,6 +11,7 @@ import { specRoute } from "./routes/spec.js";
 import { culturalRoute } from "./routes/cultural.js";
 import { majorfoundationRoute } from "./routes/majorfoundation.js";
 import { majorRoute } from "./routes/major.js";
+import { homeRoute } from "./routes/home.js";
 
 dotenv.config();
  
@@ -64,6 +65,7 @@ app.use("/EveryGrade/spec", specRoute);
 app.use("/EveryGrade/cultural", culturalRoute);
 app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
 app.use("/EveryGrade/major", majorRoute);
+app.use("/EveryGrade/home", homeRoute);
 
 app.use((err, req, res, next) => {
     if (res.headersSent) {
