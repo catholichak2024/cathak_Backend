@@ -1,8 +1,8 @@
 import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
 import bcrypt from "bcrypt";
-import { signupDTO, loginDTO, findIdDTO } from "./login.dto.js";
-import { addUser, getUser, findUserId } from "./login.repository.js";
+import { signupDTO, loginDTO, findIdDTO, checkIdDTO, checkMajorDTO } from "./login.dto.js";
+import { addUser, getUser, findUserId, findUserPw, patchPwRepo, checkIdRepo, checkMajorRepo, majorRepo } from "./login.repository.js";
 
 export const signupService = async (body) => {
     const hashedPassword = await bcrypt.hash(body.pw, 10);
@@ -49,3 +49,36 @@ export const findIdService = async (body) => {
     }
     return findIdDTO(userId);
 };
+
+export const findPwService = async (body) => {
+    const { number, id } = body;
+    const user = await findUserPw(number, id);
+    if (user == null) {
+        throw new BaseError(status.USER_NOT_EXIST);
+    }
+    return user[0][0].id;
+};
+
+export const patchPwService = async (userId, body) => {
+    const hashedPassword = await bcrypt.hash(body.pw, 10);
+    await patchPwRepo({
+        id: userId,
+        pw: hashedPassword
+    });
+    return;
+};
+
+export const checkIdService = async (userId) => {
+    const isExist = await checkIdRepo(userId);
+    return checkIdDTO(isExist);
+}
+
+export const checkMajorService = async (name) => {
+    const major = await checkMajorRepo(name);
+    return checkMajorDTO(major);
+}
+
+export const majorService = async () => {
+    const major = await majorRepo();
+    return checkMajorDTO(major);
+}
