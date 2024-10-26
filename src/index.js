@@ -6,8 +6,12 @@ import { specs } from "./swagger/swagger.config.js";
 import { healthRoute } from './routes/health.js';
 import { loginRoute } from "./routes/login.js";
 import { gradeRoute } from "./routes/grade.js";
+import { mypageRoute } from "./routes/mypage.js";
+import { specRoute } from "./routes/spec.js";
+import { culturalRoute } from "./routes/cultural.js";
+import { majorfoundationRoute } from "./routes/majorfoundation.js";
+import { majorRoute } from "./routes/major.js";
 import { homeRoute } from "./routes/home.js";
-
 
 dotenv.config();
  
@@ -47,6 +51,11 @@ app.get('/', (req, res) => {
 app.use("/health", healthRoute);
 app.use("/EveryGrade/user", loginRoute);
 app.use("/EveryGrade/grade", gradeRoute);
+app.use("/EveryGrade/mypage", mypageRoute);
+app.use("/EveryGrade/spec", specRoute);
+app.use("/EveryGrade/cultural", culturalRoute);
+app.use("/EveryGrade/majorfoundation", majorfoundationRoute);
+app.use("/EveryGrade/major", majorRoute);
 app.use("/EveryGrade/home", homeRoute);
 
 app.use((err, req, res, next) => {

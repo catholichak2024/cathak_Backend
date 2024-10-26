@@ -2,7 +2,7 @@ import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
 import bcrypt from "bcrypt";
 import { signupDTO, loginDTO, findIdDTO, checkIdDTO, checkMajorDTO } from "./login.dto.js";
-import { addUser, getUser, findUserId, findUserPw, patchPwRepo, checkIdRepo, checkMajorRepo } from "./login.repository.js";
+import { addUser, getUser, findUserId, findUserPw, patchPwRepo, checkIdRepo, checkMajorRepo, majorRepo } from "./login.repository.js";
 
 export const signupService = async (body) => {
     const hashedPassword = await bcrypt.hash(body.pw, 10);
@@ -75,5 +75,10 @@ export const checkIdService = async (userId) => {
 
 export const checkMajorService = async (name) => {
     const major = await checkMajorRepo(name);
+    return checkMajorDTO(major);
+}
+
+export const majorService = async () => {
+    const major = await majorRepo();
     return checkMajorDTO(major);
 }

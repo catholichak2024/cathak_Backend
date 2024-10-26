@@ -2,7 +2,7 @@ import { response } from "../../response.js";
 import { status } from "../../response.status.js";
 import { generateJWTToken } from "../../middlewares/token.auth.js";
 import { signupService, loginService, findIdService, findPwService, patchPwService, 
-  checkIdService, checkMajorService } from "./login.service.js";
+  checkIdService, checkMajorService, majorService} from "./login.service.js";
 
 export const signupController = async (req, res, next) => {
   console.log("회원가입을 요청했습니다!");
@@ -53,4 +53,9 @@ export const checkIdController = async (req, res, next) => {
 export const checkMajorController = async (req, res, next) => {
   console.log("전공 이름을 검색합니다!");
   res.send(response(status.SUCCESS, await checkMajorService(req.params.name)));
+}
+
+export const majorController = async (req, res, next) => {
+  console.log("전공을 검색합니다!");
+  res.send(response(status.SUCCESS, await majorService()));
 }
