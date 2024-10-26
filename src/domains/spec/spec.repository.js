@@ -155,3 +155,16 @@ export const otherRepo = async (userId) => {
         conn.release();
     }
 }
+
+export const typeRepo = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+        const type = await pool.query("SELECT major_type FROM user WHERE id = ?;", userId);
+        const result = type[0];
+        return result;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+}
