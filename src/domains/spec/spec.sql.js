@@ -74,3 +74,6 @@ export const majorSql =
 
 export const major2Minimum = 
 "SELECT credit FROM minimum WHERE major_type = '복수전공' AND name = ?;"
+
+export const minorMinimum = 
+"SELECT credit FROM requirement WHERE subject_type = '부전공';"

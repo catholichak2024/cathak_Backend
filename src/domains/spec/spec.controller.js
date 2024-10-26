@@ -1,6 +1,6 @@
 import { response } from "../../response.js";
 import { status } from "../../response.status.js";
-import { bcService, mmService, omService, major1Service, major2Service } from "./spec.service.js";
+import { bcService, mmService, omService, major1Service, major2Service, minorService } from "./spec.service.js";
 
 export const bcController = async (req, res, next) => {
   console.log("기초교양 상세페이지를 조회합니다!");
@@ -30,4 +30,10 @@ export const major2Controller = async (req, res, next) => {
   console.log("제2전공 상세페이지를 조회합니다!");
   const userId = req.decoded.userId;
   res.send(response(status.SUCCESS, await major2Service(userId)));
+}
+
+export const minorController = async (req, res, next) => {
+  console.log("부전공 상세페이지를 조회합니다!");
+  const userId = req.decoded.userId;
+  res.send(response(status.SUCCESS, await minorService(userId)));
 }
