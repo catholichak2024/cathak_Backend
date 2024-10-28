@@ -5,7 +5,7 @@ import { mypageController, majorController, pwController, searchController } fro
 
 export const mypageRoute = express.Router();
 
-mypageRoute.get('', asyncHandler(mypageController));
+mypageRoute.get('', tokenAuth, asyncHandler(mypageController));
 mypageRoute.patch('/major', tokenAuth, asyncHandler(majorController));
 mypageRoute.patch('/pw', tokenAuth, asyncHandler(pwController));
 mypageRoute.get('/major/search', tokenAuth, asyncHandler(searchController));
