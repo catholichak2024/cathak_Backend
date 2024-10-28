@@ -4,7 +4,7 @@ import { mypageService, majorService, pwService, searchService } from "./mypage.
 
 export const mypageController = async (req, res, next) => {
   console.log("마이페이지를 조회합니다!");
-  const userId = 'catholic1';
+  const userId = req.decoded.userId;
   res.send(response(status.SUCCESS, await mypageService(userId)));
 }
 
