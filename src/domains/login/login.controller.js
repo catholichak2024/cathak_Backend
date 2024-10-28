@@ -14,8 +14,8 @@ export const loginController = async (req, res, next) => {
   console.log("로그인을 요청했습니다!");
   const loginResponse = await loginService(req.body);
   const token = generateJWTToken(req.body.id);
-  res.setHeader('Authorization', `Bearer ${token}`);
-  res.send(response(status.SUCCESS, loginResponse));
+  res.setHeader('Authorization', `${token}`);
+  res.send(response(status.SUCCESS, {loginResponse, token}));
 }
 
 export const tokenController = async (req, res, next) => {
