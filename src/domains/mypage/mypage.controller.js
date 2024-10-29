@@ -24,5 +24,5 @@ export const pwController = async (req, res, next) => {
 
 export const searchController = async (req, res, next) => {
   console.log("전공을 검색합니다!");
-  res.send(response(status.SUCCESS, await searchService(req.query)));
+  res.send(response(status.SUCCESS, await searchService()));
 }

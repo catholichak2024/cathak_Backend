@@ -47,7 +47,6 @@ export const getMark = async (insertId) => {
     try {
         const mark = await pool.query("SELECT * FROM user_subject WHERE id = ?;", insertId);
         if (mark[0].length == 0) {
-            console.log("7")
             return null;
         }
         return mark;
@@ -68,7 +67,6 @@ export const delMarkRepo = async (userId, id) => {
         }
         const markId = await pool.query("SELECT id FROM user_subject WHERE user_id = ? AND subject_name = ?;", [userId, name[0][0].name]);
         await pool.query("DELETE FROM user_subject WHERE id = ?;", markId[0][0].id);
-        console.log("4", markId[0][0].id);
         return markId[0][0].id;
     } catch (err) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
