@@ -95,10 +95,15 @@ export const getHomeData = async (userId) => {
         (parseInt(culturalCredits[0].culturalTotal) || 0) +
         (parseInt(majorFoundationCredits[0].majorFoundationTotal) || 0) +
         (parseInt(majorCredits[0].majorTotal) || 0);
-    
 
+        
+        const [userNameData] = await pool.query(`SELECT name FROM user WHERE id = ?`, [userId]);
+        const userName = userNameData[0]?.name || "Unknown";
 
+        
+        
         return {
+            userName,
             culturalCredits: culturalCredits[0].culturalTotal || 0,
             majorFoundationCredits: majorFoundationCredits[0].majorFoundationTotal || 0,
             majorCredits: majorCredits[0].majorTotal || 0,
