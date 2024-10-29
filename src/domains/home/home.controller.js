@@ -11,6 +11,7 @@ export const homeController = async (req, res, next) => {
         res.status(200).json({
             message: "All courses fetched successfully",
             data: {
+                userName: homeData.userName,
                 culturalCourses: homeData.culturalCredits, // 교양 학점
                 majorFoundationCourses: homeData.majorFoundationCredits, // 전공기초 학점
                 majorCourses: homeData.majorCredits, // 전공 학점

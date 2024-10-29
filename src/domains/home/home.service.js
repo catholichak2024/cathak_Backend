@@ -109,8 +109,7 @@ export const getHomeData = async (userId) => {
             majorCredits: majorCredits[0].majorTotal || 0,
             totalCredits: totalCredits || 0,
             totalGPA,
-            majorGPA,
-            userName
+            majorGPA
         };
     } catch (error) {
         console.error("Error fetching home data: ", error);
