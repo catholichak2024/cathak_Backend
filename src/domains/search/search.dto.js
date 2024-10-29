@@ -13,5 +13,8 @@ export const searchDTO = (major) => {
 }
 
 export const postMarkDTO = (data) => {
+  if (data == null) {
+    return {markData: "북마크가 취소되었습니다."};
+  }
   return {markData: data[0]};
 }

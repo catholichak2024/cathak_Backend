@@ -26,5 +26,6 @@ export const status = {
   USER_NOT_EXIST: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "LOGIN004", message: "존재하지 않는 유저입니다." },
 
   //search err
-  MARK_ALREADY_EXIST: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "SEARCH001", message: "이미 등록한 강의입니다." },
+  MARK_ALREADY_EXIST: { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "SEARCH001", message: "이미 수강한 강의입니다." },
+  MARK_NOT_EXIST:  { status: StatusCodes.UNAUTHORIZED, isSuccess: false, code: "SEARCH002", message: "수강하지 않은 강의입니다." },
 };

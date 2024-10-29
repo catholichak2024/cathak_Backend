@@ -1,7 +1,7 @@
 import { BaseError } from "../../errors.js";
 import { status } from "../../response.status.js";
 import { searchDTO, postMarkDTO } from "./search.dto.js";
-import { searchRepo, postMarkRepo, getMark } from "./search.repository.js";
+import { searchRepo, postMarkRepo, getMark, delMarkRepo } from "./search.repository.js";
 
 export const searchService = async (userId, query) => {
     const { type, name } = query;
@@ -15,5 +15,14 @@ export const postMarkService = async (userId, id) => {
         throw new BaseError(status.MARK_ALREADY_EXIST);
     }
     const result = await getMark(insertId);
+    return postMarkDTO(result);
+}
+
+export const delMarkService = async (userId, id) => {
+    const markId = await delMarkRepo(userId, id);
+    if (markId == 0) {
+        throw new BaseError(status.MARK_NOT_EXIST);
+    }
+    const result = await getMark(markId);
     return postMarkDTO(result);
 }
