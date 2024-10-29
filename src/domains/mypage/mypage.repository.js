@@ -60,4 +60,35 @@ export const searchRepo = async () => {
         conn.release();
     }
 }
-  
+
+export const delRepo = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+        const existUser = await pool.query("SELECT EXISTS(SELECT 1 FROM user WHERE id = ?) as isExistUser;", userId);
+        if (!existUser[0][0].isExistUser) {
+            return 0;
+        }
+        await pool.query("DELETE FROM user_subject WHERE user_id = ?;", userId);
+        await pool.query("DELETE FROM user WHERE id = ?;", userId);
+        return userId;
+    } catch (err) {
+        throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+        conn.release();
+    }
+}
+
+export const getUser = async (userId) => {
+    const conn = await pool.getConnection();
+    try {
+      const user = await pool.query("SELECT * FROM user WHERE id = ?;", userId);
+      if (user[0].length == 0) {
+        return null;
+      }
+      return user;
+    } catch (err) {
+      throw new BaseError(status.PARAMETER_IS_WRONG);
+    } finally {
+      conn.release();
+    }
+}

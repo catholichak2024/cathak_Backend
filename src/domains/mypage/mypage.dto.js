@@ -23,3 +23,10 @@ export const majorDTO = (major) => {
 export const searchDTO = (major) => {
   return {majorData: major[0]};
 }
+
+export const delDTO = (data) => {
+  if (data == null) {
+    return {markData: "탈퇴가 완료되었습니다."};
+  }
+  return {markData: data[0]};
+}
