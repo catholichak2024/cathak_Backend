@@ -1,6 +1,6 @@
 import { response } from "../../response.js";
 import { status } from "../../response.status.js";
-import { mypageService, majorService, pwService, searchService } from "./mypage.service.js";
+import { mypageService, majorService, pwService, searchService, delService } from "./mypage.service.js";
 
 export const mypageController = async (req, res, next) => {
   console.log("마이페이지를 조회합니다!");
@@ -25,4 +25,10 @@ export const pwController = async (req, res, next) => {
 export const searchController = async (req, res, next) => {
   console.log("전공을 검색합니다!");
   res.send(response(status.SUCCESS, await searchService()));
+}
+
+export const delController = async (req, res, next) => {
+  console.log("회원탈퇴를 요청했습니다!");
+  const userId = req.decoded.userId;
+  res.send(response(status.SUCCESS, await delService(userId)));
 }
