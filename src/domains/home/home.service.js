@@ -5,45 +5,37 @@ export const getHomeData = async (userId) => {
         // 교양 학점 합산
         const [culturalCredits] = await pool.query(
             `SELECT SUM(subject.credit) AS culturalTotal
-             FROM (
-                 SELECT DISTINCT subject_name
-                 FROM user_subject
-                 WHERE user_id = 'catholic1'
-             ) us
-             JOIN subject ON us.subject_name = subject.name
-             WHERE subject.type = '교양';
-            `
+             FROM user_subject
+             JOIN subject ON user_subject.subject_name = subject.name
+             WHERE user_subject.user_id = ?
+               AND subject.type = '교양';
+            `, [userId]
         );
         
         
         
+        
 
+     
         // 전공기초 학점 합산
-        const [majorFoundationCredits] = await pool.query(
-            `SELECT SUM(subject.credit) AS majorFoundationTotal
-             FROM (
-                 SELECT DISTINCT subject_name
-                 FROM user_subject
-                 WHERE user_id = 'catholic1'
-             ) us
-             JOIN subject ON us.subject_name = subject.name
-             WHERE subject.type = '전공기초';
-`
-        );
-        
+const [majorFoundationCredits] = await pool.query(
+    `SELECT SUM(subject.credit) AS majorFoundationTotal
+     FROM user_subject
+     JOIN subject ON user_subject.subject_name = subject.name
+     WHERE user_subject.user_id = ?
+       AND subject.type = '전공기초';
+    `, [userId]
+);
 
-        // 전공 학점 합산
-        const [majorCredits] = await pool.query(
-            `SELECT SUM(subject.credit) AS majorTotal
-             FROM (
-                 SELECT DISTINCT subject_name
-                 FROM user_subject
-                 WHERE user_id = 'catholic1'
-             ) us
-             JOIN subject ON us.subject_name = subject.name
-             WHERE subject.type = '전공';
-`
-        );
+// 전공 학점 합산
+const [majorCredits] = await pool.query(
+    `SELECT SUM(subject.credit) AS majorTotal
+     FROM user_subject
+     JOIN subject ON user_subject.subject_name = subject.name
+     WHERE user_subject.user_id = ?
+       AND subject.type = '전공';
+    `, [userId]
+);
 
         // 전체 성적 계산 (GPA)
         const [totalGPAResult] = await pool.query(
@@ -60,10 +52,12 @@ export const getHomeData = async (userId) => {
                         WHEN user_subject.str_score = 'D0' THEN 1.0
                         ELSE 0
                     END
-                ) / COUNT(user_subject.str_score) AS GPA
+                ) / COUNT(CASE WHEN user_subject.str_score NOT IN ('P', 'NP') THEN user_subject.str_score END) AS GPA
             FROM user_subject
-            JOIN subject ON user_subject.subject_name = subject.name
-            WHERE user_subject.user_id = ? AND user_subject.str_score IS NOT NULL`, [userId]
+            JOIN grade ON user_subject.str_score = grade.str_score
+            WHERE user_subject.user_id = ? 
+              AND user_subject.str_score IS NOT NULL
+              AND user_subject.str_score NOT IN ('P', 'NP')`, [userId]
         );
         
         const totalGPA = totalGPAResult[0]?.GPA != null ? parseFloat(totalGPAResult[0].GPA).toFixed(1) : "0.0";
@@ -109,7 +103,7 @@ export const getHomeData = async (userId) => {
             majorCredits: majorCredits[0].majorTotal || 0,
             totalCredits: totalCredits || 0,
             totalGPA,
-            majorGPA
+            majorGPA,
         };
     } catch (error) {
         console.error("Error fetching home data: ", error);
@@ -121,3 +115,4 @@ export const getHomeData = async (userId) => {
 export const homeService = {
     getHomeData
 };
+
