@@ -41,7 +41,7 @@ export const getUser = async (userId) => {
   } finally {
     conn.release();
   }
-};
+}
 
 export const findUserId = async (name, number) => {
   const conn = await pool.getConnection();
@@ -56,7 +56,7 @@ export const findUserId = async (name, number) => {
   } finally {
     conn.release();
   }
-};
+}
 
 export const findUserPw = async (number, id) => {
   const conn = await pool.getConnection();
@@ -71,7 +71,7 @@ export const findUserPw = async (number, id) => {
   } finally {
     conn.release();
   }
-};
+}
 
 export const patchPwRepo = async (data) => {
   const conn = await pool.getConnection();
@@ -83,7 +83,7 @@ export const patchPwRepo = async (data) => {
   } finally {
     conn.release();
   }
-};
+}
 
 export const checkIdRepo = async (userId) => {
   const conn = await pool.getConnection();
@@ -95,7 +95,7 @@ export const checkIdRepo = async (userId) => {
   } finally {
       conn.release();
   }
-};
+}
 
 export const checkMajorRepo = async (name) => {
   const conn = await pool.getConnection();
@@ -107,7 +107,7 @@ export const checkMajorRepo = async (name) => {
   } finally {
       conn.release();
   }
-};
+}
 
 export const majorRepo = async () => {
   const conn = await pool.getConnection();
@@ -119,4 +119,4 @@ export const majorRepo = async () => {
   } finally {
       conn.release();
   }
-};
+}

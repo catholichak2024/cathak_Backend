@@ -11,3 +11,7 @@ export const searchDTO = (major) => {
     return {majorData: result};
   }
 }
+
+export const postMarkDTO = (data) => {
+  return {markData: data[0]};
+}
