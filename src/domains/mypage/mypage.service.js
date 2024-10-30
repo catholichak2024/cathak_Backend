@@ -29,8 +29,8 @@ export const pwService = async (userId, body) => {
     return;
 }
 
-export const searchService = async () => {
-    const major = await searchRepo();
+export const searchService = async (query) => {
+    const major = await searchRepo(query);
     return searchDTO(major);
 }
 
