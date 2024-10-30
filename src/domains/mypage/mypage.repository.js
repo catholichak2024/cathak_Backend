@@ -49,11 +49,19 @@ export const pwRepo = async (data) => {
     }
 }
   
-export const searchRepo = async () => {
+export const searchRepo = async (query) => {
     const conn = await pool.getConnection();
     try {
-        const major = await pool.query("SELECT name FROM major ORDER BY id;");
-        return major;
+        const name = query.name;
+        if(typeof name == "undefined"){
+            const major = await pool.query("SELECT name FROM major ORDER BY id;");
+            conn.release();
+            return major;
+        }else{
+            const major = await pool.query("SELECT name FROM major WHERE name REGEXP ? ORDER BY id;", name);
+            conn.release();
+            return major;
+        }
     } catch (err) {
         throw new BaseError(status.PARAMETER_IS_WRONG);
     } finally {
