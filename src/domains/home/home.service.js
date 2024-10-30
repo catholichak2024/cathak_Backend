@@ -4,17 +4,10 @@ export const getHomeData = async (userId) => {
     try {
         // 교양 학점 합산
         const [culturalCredits] = await pool.query(
-            `SELECT SUM(subject.credit) AS culturalTotal
-             FROM user_subject
-             JOIN subject ON user_subject.subject_name = subject.name
-             JOIN grade ON user_subject.str_score = grade.str_score
-             WHERE user_subject.user_id = ?
-               AND subject.type = '교양'
-               AND user_subject.str_score IS NOT NULL  -- NULL 값은 제외
-               AND user_subject.str_score != 'NP';     -- 'NP' 과목은 제외하고 나머지는 포함
-            `, [userId]
-        );
-        
+            `SELECT SUM(s.credit) AS culturalTotal FROM user_subject us
+            JOIN subject s ON us.subject_name = s.name
+            WHERE us.user_id = ? AND s.type = '교양'
+            AND (str_score IS NULL OR str_score != 'NP');`, userId);
         
         
         
